@@ -21,7 +21,7 @@ export const GET_USERS_LOCAL = gql`
 `;
 
 export const GET_USERIDS = gql`
-  query GetUsers {
+  query GetUserIds {
     users(order_by: { created_at: desc }) {
       id
     }
@@ -29,10 +29,40 @@ export const GET_USERIDS = gql`
 `;
 
 export const GET_USERBY_ID = gql`
-  query GetUsers($id: uuid!) {
+  query GetUserById($id: uuid!) {
     users_by_pk(id: $id) {
       id
       name
+      created_at
+    }
+  }
+`;
+
+export const CREATE_USER = gql`
+  mutation CreateUser($name: String!) {
+    insert_users_one(object: { name: "" }) {
+      id
+      name
+      created_at
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation DeleteUser($id: uuid!) {
+    delete_users_by_pk(id: $id) {
+      created_at
+      id
+      name
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($id: uuid!, $name: String!) {
+    update_users_by_pk(pk_columns: { id: $id }, _set: { name: $name }) {
+      name
+      id
       created_at
     }
   }
