@@ -1243,6 +1243,17 @@ export type GetUsersQuery = (
   )> }
 );
 
+export type GetUsersLocalQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUsersLocalQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'name' | 'id' | 'created_at'>
+  )> }
+);
+
 export type GetUserIdsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1268,7 +1279,7 @@ export type GetUserByIdQuery = (
 );
 
 export type CreateUserMutationVariables = Exact<{
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -1295,7 +1306,7 @@ export type DeleteUserMutation = (
 
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['uuid'];
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -1344,6 +1355,42 @@ export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+export const GetUsersLocalDocument = gql`
+    query GetUsersLocal {
+  users(order_by: {created_at: desc}) @client {
+    name
+    id
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useGetUsersLocalQuery__
+ *
+ * To run a query within a React component, call `useGetUsersLocalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersLocalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersLocalQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUsersLocalQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersLocalQuery, GetUsersLocalQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersLocalQuery, GetUsersLocalQueryVariables>(GetUsersLocalDocument, options);
+      }
+export function useGetUsersLocalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersLocalQuery, GetUsersLocalQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersLocalQuery, GetUsersLocalQueryVariables>(GetUsersLocalDocument, options);
+        }
+export type GetUsersLocalQueryHookResult = ReturnType<typeof useGetUsersLocalQuery>;
+export type GetUsersLocalLazyQueryHookResult = ReturnType<typeof useGetUsersLocalLazyQuery>;
+export type GetUsersLocalQueryResult = Apollo.QueryResult<GetUsersLocalQuery, GetUsersLocalQueryVariables>;
 export const GetUserIdsDocument = gql`
     query GetUserIds {
   users(order_by: {created_at: desc}) {
@@ -1416,8 +1463,8 @@ export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
 export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
 export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
 export const CreateUserDocument = gql`
-    mutation CreateUser($name: String!) {
-  insert_users_one(object: {name: ""}) {
+    mutation CreateUser($name: String) {
+  insert_users_one(object: {name: $name}) {
     id
     name
     created_at
@@ -1486,7 +1533,7 @@ export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutati
 export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
 export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($id: uuid!, $name: String!) {
+    mutation UpdateUser($id: uuid!, $name: String) {
   update_users_by_pk(pk_columns: {id: $id}, _set: {name: $name}) {
     name
     id

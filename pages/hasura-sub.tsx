@@ -1,10 +1,10 @@
 import { VFC } from 'react';
 import Link from 'next/link';
-import { useGetUsersQuery } from '../types/generated/graphql';
+import { useGetUsersLocalQuery } from '../types/generated/graphql';
 import { Layout } from '../components/Layout';
 
 const HasuraSub: VFC = () => {
-  const { data, error } = useGetUsersQuery({ fetchPolicy: 'network-only' });
+  const { data, error } = useGetUsersLocalQuery();
   if (error) {
     return (
       <Layout title="Hasura fetchPolicy">

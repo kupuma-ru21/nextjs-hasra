@@ -11,7 +11,7 @@ export const GET_USERS = gql`
 `;
 
 export const GET_USERS_LOCAL = gql`
-  query GetUsers {
+  query GetUsersLocal {
     users(order_by: { created_at: desc }) @client {
       name
       id
@@ -39,8 +39,8 @@ export const GET_USERBY_ID = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation CreateUser($name: String!) {
-    insert_users_one(object: { name: "" }) {
+  mutation CreateUser($name: String) {
+    insert_users_one(object: { name: $name }) {
       id
       name
       created_at
@@ -59,7 +59,7 @@ export const DELETE_USER = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation UpdateUser($id: uuid!, $name: String!) {
+  mutation UpdateUser($id: uuid!, $name: String) {
     update_users_by_pk(pk_columns: { id: $id }, _set: { name: $name }) {
       name
       id
