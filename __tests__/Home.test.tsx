@@ -5,6 +5,6 @@ import Home from '../pages/index';
 describe('Should render title text', () => {
   it('Should render title text on Home', () => {
     const { getByText } = render(<Home />);
-    expect(getByText('Next.js!')).toBeInTheDocument();
+    expect(getByText('Next.js + GraphQL')).toBeInTheDocument();
   });
 });
