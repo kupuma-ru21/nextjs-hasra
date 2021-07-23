@@ -3,6 +3,9 @@ import { setupServer } from 'msw/node';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { handlers } from '../mock/handlers';
 
+process.env.NEXT_PUBLIC_HASURA_URL =
+  'https://hasura-apollo.hasura.app/v1/graphql';
+
 initTestHelpers();
 
 const server = setupServer(...handlers);
